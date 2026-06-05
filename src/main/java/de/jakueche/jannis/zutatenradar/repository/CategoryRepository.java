@@ -1,11 +1,15 @@
 package de.jakueche.jannis.zutatenradar.repository;
 
-// TODO: Spring Data JPA Repository fuer Category
-//
-// Erweitert JpaRepository<Category, Long>
-//
-// Eigene Queries:
-//   - Optional<Category> findByNameIgnoreCase(String name)
+import de.jakueche.jannis.zutatenradar.model.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepository {
+import java.util.Optional;
+
+// JpaRepository<Category, Long> gibt dir kostenlos:
+//   findAll(), findById(), save(), deleteById(), count(), existsById()
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    // Spring generiert das SQL automatisch aus dem Methodennamen:
+    // SELECT * FROM category WHERE LOWER(name) = LOWER(?)
+    Optional<Category> findByNameIgnoreCase(String name);
 }

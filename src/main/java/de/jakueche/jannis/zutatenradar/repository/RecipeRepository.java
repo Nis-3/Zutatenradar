@@ -1,15 +1,19 @@
 package de.jakueche.jannis.zutatenradar.repository;
 
-// TODO: Spring Data JPA Repository fuer Recipe
-//
-// Erweitert JpaRepository<Recipe, Long> -- damit bekommst du kostenlos:
-//   findAll(), findById(), save(), deleteById(), count(), existsById()
-//
-// Eigene abgeleitete Queries (Methodenname -> SQL automatisch):
-//   - List<Recipe> findByCategoryId(Long categoryId)
-//   - List<Recipe> findByNameContainingIgnoreCase(String name)
-//
-// Spaeter ggf. @Query fuer komplexere Suchen (z.B. Rezepte nach Zutaten filtern)
+import de.jakueche.jannis.zutatenradar.model.Recipe;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RecipeRepository {
+import java.util.List;
+
+// JpaRepository<Recipe, Long> gibt dir kostenlos:
+//   findAll(), findById(), save(), deleteById(), count(), existsById()
+public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+
+    // Alle Rezepte einer Kategorie finden
+    // SELECT * FROM recipe WHERE category_id = ?
+    List<Recipe> findByCategoryId(Long categoryId);
+
+    // Rezepte nach Name suchen (Teilsuche, Gross/Klein egal)
+    // SELECT * FROM recipe WHERE LOWER(name) LIKE LOWER('%suchbegriff%')
+    List<Recipe> findByNameContainingIgnoreCase(String name);
 }

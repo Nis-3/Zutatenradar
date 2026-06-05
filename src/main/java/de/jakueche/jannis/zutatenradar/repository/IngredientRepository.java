@@ -1,12 +1,15 @@
 package de.jakueche.jannis.zutatenradar.repository;
 
-// TODO: Spring Data JPA Repository fuer Ingredient
-//
-// Erweitert JpaRepository<Ingredient, Long>
-//
-// Eigene Queries:
-//   - List<Ingredient> findByRecipeId(Long recipeId)
-//   - List<Ingredient> findByNameContainingIgnoreCase(String name)
+import de.jakueche.jannis.zutatenradar.model.Ingredient;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IngredientRepository {
+import java.util.List;
+
+// JpaRepository<Ingredient, Long> gibt dir kostenlos:
+//   findAll(), findById(), save(), deleteById(), count(), existsById()
+public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
+
+    // Alle Zutaten eines Rezepts finden
+    // SELECT * FROM ingredient WHERE recipe_id = ?
+    List<Ingredient> findByRecipeId(Long recipeId);
 }

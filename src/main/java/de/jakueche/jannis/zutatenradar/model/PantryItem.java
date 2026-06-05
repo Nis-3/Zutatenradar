@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,17 +14,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ingredient {
+public class PantryItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;    // z.B. "Spaghetti", "Ei", "Parmesan"
-    private String amount;  // z.B. "500g", "4 Stueck", "1 EL"
+    private String name;    // z.B. "Spaghetti", "Eier", "Käse"
+    private String amount;  // z.B. "500g", "6 Stück", "200g"
 
-    // Viele Zutaten gehoeren zu einem Rezept
-    @ManyToOne
-    @JoinColumn(name = "recipe_id") // Fremdschluessel-Spalte in der ingredient-Tabelle
-    private Recipe recipe;
+    // Keine Beziehung zu Recipe -- das sind DEINE Zutaten,
+    // unabhaengig von jedem Rezept. Loeschst du ein Rezept,
+    // bleiben deine PantryItems bestehen.
 }
