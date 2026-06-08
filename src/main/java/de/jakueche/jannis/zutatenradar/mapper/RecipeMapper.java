@@ -1,18 +1,39 @@
 package de.jakueche.jannis.zutatenradar.mapper;
 
-// TODO: Mapper-Klasse fuer Recipe Entity <-> DTO Umwandlung
-//
-// Statische Utility-Klasse (private Konstruktor, nur static Methoden):
-//
-//   public static Recipe toEntity(RecipeRequest request, Category category)
-//     -> Erzeugt eine neue Recipe-Entity aus dem Request-DTO + der zugehoerigen Kategorie
-//
-//   public static RecipeResponse toResponse(Recipe entity)
-//     -> Wandelt eine Recipe-Entity in ein Response-DTO um
-//        Inkl. categoryName und Liste der Ingredients als IngredientResponse
-//
-// Analog zum TrackedObjectMapper aus der Vorlesung.
+import de.jakueche.jannis.zutatenradar.dto.RecipeRequest;
+import de.jakueche.jannis.zutatenradar.dto.RecipeResponse;
+import de.jakueche.jannis.zutatenradar.model.Category;
+import de.jakueche.jannis.zutatenradar.model.Recipe;
+
+import java.util.Collections;
 
 public final class RecipeMapper {
+
     private RecipeMapper() {}
+
+    // Request-DTO → Entity (zum Speichern in der Datenbank)
+    public static Recipe toEntity(RecipeRequest request, Category category) {
+        Recipe recipe = new Recipe();
+        recipe.setName(request.name());
+        recipe.setDescription(request.description());
+        recipe.setImageUrl(request.imageUrl());
+        recipe.setCategory(category);
+        return recipe;
+    }
+
+    // Entity → Response-DTO (zum Zurückschicken ans Frontend)
+    public static RecipeResponse toResponse(Recipe entity) {
+        return new RecipeResponse(
+            entity.getId(),
+            entity.getName(),
+            entity.getDescription(),
+            entity.getImageUrl(),
+            entity.getCategory() != null ? entity.getCategory().getName() : null,
+            entity.getIngredients() != null
+                ? entity.getIngredients().stream()
+                    .map(IngredientMapper::toResponse)
+                    .toList()
+                : Collections.emptyList()
+        );
+    }
 }
