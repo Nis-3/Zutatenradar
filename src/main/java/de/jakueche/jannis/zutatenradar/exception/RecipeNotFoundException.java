@@ -1,15 +1,10 @@
 package de.jakueche.jannis.zutatenradar.exception;
 
-// TODO: Exception fuer "Rezept nicht gefunden"
-//
-// Erweitert RuntimeException.
-// Wird im Service geworfen, wenn findById ein leeres Optional liefert.
-// Der GlobalExceptionHandler faengt sie ab und gibt HTTP 404 + ProblemDetail zurueck.
-//
-// Konstruktor:
-//   public RecipeNotFoundException(Long id) {
-//       super("Recipe with id " + id + " not found");
-//   }
+// Wird geworfen wenn ein Rezept mit einer bestimmten ID nicht existiert.
+// Der GlobalExceptionHandler fängt diese ab und gibt HTTP 404 zurück.
+public class RecipeNotFoundException extends RuntimeException {
 
-public class RecipeNotFoundException {
+    public RecipeNotFoundException(Long id) {
+        super("Rezept mit ID " + id + " nicht gefunden");
+    }
 }
