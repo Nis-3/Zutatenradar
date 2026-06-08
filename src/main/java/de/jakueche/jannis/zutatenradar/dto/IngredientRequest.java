@@ -1,12 +1,13 @@
 package de.jakueche.jannis.zutatenradar.dto;
 
-// TODO: DTO fuer eingehende Zutaten-Daten
-//
-// Java Record:
-//   public record IngredientRequest(
-//       @NotBlank String name,
-//       @NotBlank String amount
-//   ) {}
+import jakarta.validation.constraints.NotBlank;
 
-public class IngredientRequest {
-}
+// Was das Frontend schickt wenn eine Zutat zu einem Rezept hinzugefuegt wird
+public record IngredientRequest(
+
+    @NotBlank(message = "Zutatenname darf nicht leer sein")
+    String name,
+
+    @NotBlank(message = "Menge darf nicht leer sein")
+    String amount
+) {}

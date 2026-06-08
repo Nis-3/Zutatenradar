@@ -1,12 +1,12 @@
 package de.jakueche.jannis.zutatenradar.dto;
 
-// TODO: DTO fuer eingehende Vorrats-Daten
-//
-// Java Record:
-//   public record PantryItemRequest(
-//       @NotBlank String name,
-//       @NotBlank String amount
-//   ) {}
+import jakarta.validation.constraints.NotBlank;
 
-public class PantryItemRequest {
-}
+// Was das Frontend schickt wenn du eine Zutat zu deinem Vorrat hinzufuegst
+public record PantryItemRequest(
+
+    @NotBlank(message = "Zutatenname darf nicht leer sein")
+    String name,
+
+    String amount  // Optional -- z.B. "500g" oder leer wenn du es nicht weisst
+) {}

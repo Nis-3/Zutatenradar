@@ -1,17 +1,21 @@
 package de.jakueche.jannis.zutatenradar.dto;
 
-// TODO: DTO fuer eingehende Rezept-Daten (was der Client schickt, OHNE id)
-//
-// Java Record -- immutable, kein Boilerplate:
-//   public record RecipeRequest(
-//       @NotBlank String name,
-//       @Size(max = 2000) String description,
-//       String imageUrl,
-//       @NotNull Long categoryId
-//   ) {}
-//
-// Bean Validation Annotationen sorgen dafuer, dass @Valid im Controller
-// automatisch prueft (Pflichtanforderung #5).
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-public class RecipeRequest {
-}
+// Was das Frontend schickt wenn ein Rezept erstellt/bearbeitet wird (OHNE id)
+public record RecipeRequest(
+
+    @NotBlank(message = "Name darf nicht leer sein")
+    @Size(max = 200, message = "Name darf maximal 200 Zeichen haben")
+    String name,
+
+    @Size(max = 2000, message = "Beschreibung darf maximal 2000 Zeichen haben")
+    String description,
+
+    String imageUrl,
+
+    @NotNull(message = "Kategorie muss angegeben werden")
+    Long categoryId
+) {}

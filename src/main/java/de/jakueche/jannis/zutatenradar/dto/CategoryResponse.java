@@ -1,12 +1,7 @@
 package de.jakueche.jannis.zutatenradar.dto;
 
-// TODO: DTO fuer ausgehende Kategorie-Daten
-//
-// Java Record:
-//   public record CategoryResponse(
-//       Long id,
-//       String name
-//   ) {}
-
-public class CategoryResponse {
-}
+// Was das Backend zurueckgibt fuer eine Kategorie
+public record CategoryResponse(
+    Long id,
+    String name
+) {}
