@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
+// Service für die externe OpenFoodFacts API
+// Bekommt den RestClient per Constructor Injection
 @Service
 public class OpenFoodFactsService {
 
@@ -15,6 +17,8 @@ public class OpenFoodFactsService {
         this.restClient = openFoodFactsRestClient;
     }
 
+    // Sucht Produkte bei OpenFoodFacts und gibt die Nährwertdaten zurück
+    // Bei Netzwerkfehlern wird eine ExternalApiException geworfen (HTTP 502)
     public ProductSearchResponse searchProducts(String query) {
         try {
             return restClient.get()

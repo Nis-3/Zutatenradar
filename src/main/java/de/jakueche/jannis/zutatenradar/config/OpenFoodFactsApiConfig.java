@@ -8,6 +8,8 @@ import org.springframework.web.client.RestClient;
 
 import java.time.Duration;
 
+// Konfiguration des RestClients für die OpenFoodFacts-API
+// Liest die Werte aus application.properties (@Value)
 @Configuration
 public class OpenFoodFactsApiConfig {
 
@@ -20,6 +22,7 @@ public class OpenFoodFactsApiConfig {
     @Value("${openfoodfacts.api.read-timeout-ms}")
     private int readTimeout;
 
+    // Erstellt einen RestClient-Bean mit Base-URL, Timeouts und JSON-Header
     @Bean
     RestClient openFoodFactsRestClient() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();

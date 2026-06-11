@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+// REST-Controller für die externe API-Anbindung
+// Das Frontend spricht nie direkt mit OpenFoodFacts, nur mit diesem Endpoint
 @RestController
 @RequestMapping("/api/nutrition")
 public class NutritionController {
@@ -17,6 +19,7 @@ public class NutritionController {
         this.openFoodFactsService = openFoodFactsService;
     }
 
+    // Nährwertdaten zu einem Produkt suchen
     @GetMapping("/search")
     public ProductSearchResponse search(@RequestParam String query) {
         return openFoodFactsService.searchProducts(query);
