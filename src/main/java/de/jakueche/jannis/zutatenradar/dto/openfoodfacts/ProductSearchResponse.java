@@ -1,31 +1,27 @@
 package de.jakueche.jannis.zutatenradar.dto.openfoodfacts;
 
-// TODO: DTO fuer die Antwort der OpenFoodFacts Search-API
-//
-// Die externe API liefert JSON in IHRER Struktur -- wir mappen nur die Felder die wir brauchen.
-// @JsonIgnoreProperties(ignoreUnknown = true) macht die Records robust gegen API-Aenderungen.
-//
-// Java Record:
-//   @JsonIgnoreProperties(ignoreUnknown = true)
-//   public record ProductSearchResponse(
-//       int count,
-//       List<Product> products
-//   ) {}
-//
-// Verschachtelte Records fuer die Produktdaten:
-//   @JsonIgnoreProperties(ignoreUnknown = true)
-//   public record Product(
-//       String product_name,
-//       Nutriments nutriments
-//   ) {}
-//
-//   @JsonIgnoreProperties(ignoreUnknown = true)
-//   public record Nutriments(
-//       double energy_kcal_100g,
-//       double proteins_100g,
-//       double carbohydrates_100g,
-//       double fat_100g
-//   ) {}
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ProductSearchResponse {
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record ProductSearchResponse(
+        int count,
+        List<Product> products
+) {
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record Product(
+            @JsonProperty("product_name") String productName,
+            Nutriments nutriments
+    ) {}
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record Nutriments(
+            @JsonProperty("energy-kcal_100g") double energyKcal100g,
+            @JsonProperty("proteins_100g") double proteins100g,
+            @JsonProperty("carbohydrates_100g") double carbohydrates100g,
+            @JsonProperty("fat_100g") double fat100g
+    ) {}
 }

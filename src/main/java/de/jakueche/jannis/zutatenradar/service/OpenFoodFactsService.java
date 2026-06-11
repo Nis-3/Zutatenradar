@@ -1,22 +1,28 @@
 package de.jakueche.jannis.zutatenradar.service;
 
-// TODO: Service fuer die externe OpenFoodFacts-API (@Service)
-//
-// Bekommt einen RestClient per Constructor Injection (konfiguriert in OpenFoodFactsApiConfig).
-//
-// Aufgabe: Naehrwertdaten zu einer Zutat von OpenFoodFacts abrufen.
-// API-Docs: https://world.openfoodfacts.org/api/v2/
-//
-// Methoden:
-//   - List<ProductInfo> searchProducts(String query) -- Produkte nach Name suchen
-//     Ruft z.B. GET https://world.openfoodfacts.org/cgi/search.pl?search_terms=pasta&json=true auf
-//     Deserialisiert die JSON-Antwort in eigene DTOs (im dto/openfoodfacts Package)
-//
-// Fehlerbehandlung:
-//   - RestClientException abfangen -> ExternalApiException werfen
-//   - onStatus fuer 4xx/5xx Fehler
-//
-// Spaeter: @Retryable fuer Resilienz bei Netzwerkfehlern
+import de.jakueche.jannis.zutatenradar.dto.openfoodfacts.ProductSearchResponse;
+import de.jakueche.jannis.zutatenradar.exception.ExternalApiException;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
+@Service
 public class OpenFoodFactsService {
+
+    private final RestClient restClient;
+
+    public OpenFoodFactsService(RestClient openFoodFactsRestClient) {
+        this.restClient = openFoodFactsRestClient;
+    }
+
+    public ProductSearchResponse searchProducts(String query) {
+        try {
+            return restClient.get()
+                    .uri("/cgi/search.pl?search_terms={query}&json=true&page_size=5", query)
+                    .retrieve()
+                    .body(ProductSearchResponse.class);
+        } catch (RestClientException ex) {
+            throw new ExternalApiException("OpenFoodFacts API nicht erreichbar: " + ex.getMessage(), ex);
+        }
+    }
 }

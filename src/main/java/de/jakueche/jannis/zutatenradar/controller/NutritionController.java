@@ -1,14 +1,24 @@
 package de.jakueche.jannis.zutatenradar.controller;
 
-// TODO: REST-Controller fuer die externe API-Anbindung (@RestController, @RequestMapping("/api/nutrition"))
-//
-// Endpoints:
-//   GET /api/nutrition/search?query=pasta  -> Produkte bei OpenFoodFacts suchen
-//                                             Gibt Naehrwertdaten zurueck
-//
-// Bekommt OpenFoodFactsService per Constructor Injection.
-// Das ist der Endpunkt, ueber den das Frontend die externe API-Daten abruft.
-// Das Frontend spricht NIE direkt mit OpenFoodFacts -- immer ueber das Backend.
+import de.jakueche.jannis.zutatenradar.dto.openfoodfacts.ProductSearchResponse;
+import de.jakueche.jannis.zutatenradar.service.OpenFoodFactsService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/api/nutrition")
 public class NutritionController {
+
+    private final OpenFoodFactsService openFoodFactsService;
+
+    public NutritionController(OpenFoodFactsService openFoodFactsService) {
+        this.openFoodFactsService = openFoodFactsService;
+    }
+
+    @GetMapping("/search")
+    public ProductSearchResponse search(@RequestParam String query) {
+        return openFoodFactsService.searchProducts(query);
+    }
 }

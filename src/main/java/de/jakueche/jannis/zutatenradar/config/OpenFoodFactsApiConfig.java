@@ -1,20 +1,35 @@
 package de.jakueche.jannis.zutatenradar.config;
 
-// TODO: Konfiguration des RestClients fuer OpenFoodFacts (@Configuration)
-//
-// Analog zu NasaApiConfig aus Vorlesung 7.
-//
-// Liest Werte aus application.properties:
-//   @Value("${openfoodfacts.api.base-url}") -> https://world.openfoodfacts.org
-//   @Value("${openfoodfacts.api.connect-timeout-ms}") -> 2000
-//   @Value("${openfoodfacts.api.read-timeout-ms}") -> 5000
-//
-// Erstellt einen @Bean RestClient mit:
-//   - baseUrl
-//   - Timeouts (Connect + Read) via SimpleClientHttpRequestFactory
-//   - Default Accept-Header: application/json
-//
-// OpenFoodFacts braucht KEINEN API-Key -- ist komplett kostenlos und offen.
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
+
+@Configuration
 public class OpenFoodFactsApiConfig {
+
+    @Value("${openfoodfacts.api.base-url}")
+    private String baseUrl;
+
+    @Value("${openfoodfacts.api.connect-timeout-ms}")
+    private int connectTimeout;
+
+    @Value("${openfoodfacts.api.read-timeout-ms}")
+    private int readTimeout;
+
+    @Bean
+    RestClient openFoodFactsRestClient() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(Duration.ofMillis(connectTimeout));
+        factory.setReadTimeout(Duration.ofMillis(readTimeout));
+
+        return RestClient.builder()
+                .baseUrl(baseUrl)
+                .requestFactory(factory)
+                .defaultHeader("Accept", "application/json")
+                .build();
+    }
 }
